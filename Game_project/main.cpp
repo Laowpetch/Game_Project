@@ -31,27 +31,32 @@ int main() {
 
 	while (window.isOpen())
 	{
+		int movement=0;
 		window.draw(shapeSprite);
 		window.draw(collision);
 		window.display();
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) 
 		{
-			shapeSprite.move(0.f, .1f);
-			shapeSprite.setTextureRect(sf::IntRect(spriteSizeX * animationFrame, spriteSizeY * 1, spriteSizeX, spriteSizeY));
+			movement = 2;
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 		{
-			shapeSprite.move(0.f, -.1f);
-			shapeSprite.setTextureRect(sf::IntRect(spriteSizeX * animationFrame, 0, spriteSizeX, spriteSizeY));
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-		{
-			shapeSprite.move(0.f, 0.f);
-			shapeSprite.setTextureRect(sf::IntRect(0, 0, spriteSizeX, spriteSizeY));
+			movement = 1;
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 		{
 			window.close();
+		}
+		if (movement == 0) {
+			shapeSprite.setTextureRect(sf::IntRect(0, 0, spriteSizeX, spriteSizeY));
+		}
+		else if (movement == 2) {
+			shapeSprite.move(0.f, 1.f);
+			shapeSprite.setTextureRect(sf::IntRect(spriteSizeX * animationFrame, spriteSizeY * 1, spriteSizeX, spriteSizeY));
+		}
+		else if (movement == 1) {
+			shapeSprite.move(0.f, -1.f);
+			shapeSprite.setTextureRect(sf::IntRect(spriteSizeX * animationFrame, 0, spriteSizeX, spriteSizeY));
 		}
 		animationFrame++;
 		if (animationFrame >= 2) {
