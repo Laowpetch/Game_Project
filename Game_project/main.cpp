@@ -2,59 +2,46 @@
 #include <iostream>
 #include<stdio.h>
 int main() {
-	sf::RenderWindow window(sf::VideoMode(1200, 600), "Game from scratch!");
-
+	sf::RenderWindow window(sf::VideoMode(1200, 600), "Pachara Loawpetch 63010629");
 	//////bg
 	sf::Texture backgroundTexture;
 	if (!backgroundTexture.loadFromFile("bg.png"))
 	{
 		std::cout << "load failed" << std::endl;
 	}
-
-
 	//////Texture
 	sf::Texture playerTexture;
 	if (!playerTexture.loadFromFile("player_plane.png"))
 	{
 		std::cout << "load failed" << std::endl;
 	}
-
 	//////Fire
 	sf::Texture fireTexture;
 	if (!fireTexture.loadFromFile("fire.png"))
 	{
 		std::cout << "load failed" << std::endl;
 	}
-
 	//////bg
 	sf::Sprite backgroundSprite;
 	backgroundSprite.setTexture(backgroundTexture);
-
 	//////Sprite
-
 	sf::Sprite shapeSprite;
 	shapeSprite.setTexture(playerTexture);
-
 	int spriteSizeX = playerTexture.getSize().x/3;
 	int spriteSizeY = playerTexture.getSize().y/2;
-
 	shapeSprite.setTextureRect(sf::IntRect(0, 0, spriteSizeX, spriteSizeY));
 	shapeSprite.setPosition(150,50);
-
 	//////fireSprite
 	sf::Sprite fireSprite;
 	fireSprite.setTexture(fireTexture);
 	int fspriteSizeX = playerTexture.getSize().x / 4;
 	int fspriteSizeY = playerTexture.getSize().y / 1;
-
 	fireSprite.setTextureRect(sf::IntRect(0, 0, fspriteSizeX, fspriteSizeY));
 	fireSprite.setPosition(90, 57);
-
-	///////
+	///////statements
 	int animationFrame = 0;
 	int fireframe=0;
 	float yBorder=50;
-
 	while (window.isOpen())
 	{
 		int movement=0;
