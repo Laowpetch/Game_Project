@@ -17,6 +17,12 @@ int main() {
 		std::cout << "load failed" << std::endl;
 	}
 
+	//////Fire
+	sf::Texture fireTexture;
+	if (!fireTexture.loadFromFile("fire.png"))
+	{
+		std::cout << "load failed" << std::endl;
+	}
 
 	//////Sprite
 
@@ -29,13 +35,24 @@ int main() {
 	shapeSprite.setTextureRect(sf::IntRect(0, 0, spriteSizeX, spriteSizeY));
 	shapeSprite.setPosition(150,50);
 
+	//////fireSprite
+	sf::Sprite fireSprite;
+	fireSprite.setTexture(fireTexture);
+	int fspriteSizeX = playerTexture.getSize().x / 4;
+	int fspriteSizeY = playerTexture.getSize().y / 1;
+
+	fireSprite.setTextureRect(sf::IntRect(0, 0, fspriteSizeX, fspriteSizeY));
+	fireSprite.setPosition(90, 57);
+
 	int animationFrame = 0;
+	int fireframe=0;
 	float yBorder=50;
 
 	while (window.isOpen())
 	{
 		int movement=0;
 		window.draw(shapeSprite);
+		window.draw(fireSprite);
 		window.draw(collision);
 		window.display();
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) 
@@ -55,14 +72,22 @@ int main() {
 			}
 			else if (movement == 2 && yBorder != 530) {
 				shapeSprite.move(0.f, 1.f);
+				fireSprite.move(0.f, 1.f);
 				yBorder += 1;
 				shapeSprite.setTextureRect(sf::IntRect(spriteSizeX * animationFrame, spriteSizeY * 1, spriteSizeX, spriteSizeY));
+
 			}
 			else if (movement == 1 && yBorder != 0) {
 				shapeSprite.move(0.f, -1.f);
+				fireSprite.move(0.f, -1.f);
 				yBorder -= 1;
 				shapeSprite.setTextureRect(sf::IntRect(spriteSizeX * animationFrame, 0, spriteSizeX, spriteSizeY));
 			}
+			fireSprite.setTextureRect(sf::IntRect(spriteSizeX * fireframe, 0, fspriteSizeX, fspriteSizeY));
+		fireframe++;
+		if (fireframe >= 3) {
+			fireframe = 0;
+		}
 		animationFrame++;
 		if (animationFrame >= 2) {
 			animationFrame = 2;
