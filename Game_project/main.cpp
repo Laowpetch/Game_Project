@@ -2,7 +2,7 @@
 #include <iostream>
 #include<stdio.h>
 int main() {
-	sf::RenderWindow window(sf::VideoMode(1080, 720), "Game from scratch!");
+	sf::RenderWindow window(sf::VideoMode(1200, 600), "Game from scratch!");
 
 	//////circle
 
@@ -16,6 +16,7 @@ int main() {
 	{
 		std::cout << "load failed" << std::endl;
 	}
+
 
 	//////Sprite
 
@@ -52,16 +53,14 @@ int main() {
 			if (movement == 0) {
 				shapeSprite.setTextureRect(sf::IntRect(0, 0, spriteSizeX, spriteSizeY));
 			}
-			else if (movement == 2 && yBorder != 600) {
+			else if (movement == 2 && yBorder != 530) {
 				shapeSprite.move(0.f, 1.f);
 				yBorder += 1;
-				printf("%f\n", yBorder);
 				shapeSprite.setTextureRect(sf::IntRect(spriteSizeX * animationFrame, spriteSizeY * 1, spriteSizeX, spriteSizeY));
 			}
 			else if (movement == 1 && yBorder != 0) {
 				shapeSprite.move(0.f, -1.f);
 				yBorder -= 1;
-				printf("%f\n", yBorder);
 				shapeSprite.setTextureRect(sf::IntRect(spriteSizeX * animationFrame, 0, spriteSizeX, spriteSizeY));
 			}
 		animationFrame++;
