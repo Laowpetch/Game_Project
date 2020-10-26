@@ -4,11 +4,13 @@
 int main() {
 	sf::RenderWindow window(sf::VideoMode(1200, 600), "Game from scratch!");
 
-	//////circle
+	//////bg
+	sf::Texture backgroundTexture;
+	if (!backgroundTexture.loadFromFile("bg.png"))
+	{
+		std::cout << "load failed" << std::endl;
+	}
 
-	sf::CircleShape collision(100.f);
-	collision.setPosition({ 200.f,200.f });
-	collision.setFillColor(sf::Color::Red);
 
 	//////Texture
 	sf::Texture playerTexture;
@@ -23,6 +25,10 @@ int main() {
 	{
 		std::cout << "load failed" << std::endl;
 	}
+
+	//////bg
+	sf::Sprite backgroundSprite;
+	backgroundSprite.setTexture(backgroundTexture);
 
 	//////Sprite
 
@@ -44,6 +50,7 @@ int main() {
 	fireSprite.setTextureRect(sf::IntRect(0, 0, fspriteSizeX, fspriteSizeY));
 	fireSprite.setPosition(90, 57);
 
+	///////
 	int animationFrame = 0;
 	int fireframe=0;
 	float yBorder=50;
@@ -51,9 +58,9 @@ int main() {
 	while (window.isOpen())
 	{
 		int movement=0;
+		window.draw(backgroundSprite);
 		window.draw(shapeSprite);
 		window.draw(fireSprite);
-		window.draw(collision);
 		window.display();
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) 
 		{
