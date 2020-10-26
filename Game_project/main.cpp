@@ -1,6 +1,5 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include<stdio.h>
 int main() {
 	sf::RenderWindow window(sf::VideoMode(1200, 600), "Pachara Loawpetch 63010629");
 	//////bg
