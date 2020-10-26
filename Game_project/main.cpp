@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include<stdio.h>
 int main() {
 	sf::RenderWindow window(sf::VideoMode(1080, 720), "Game from scratch!");
 
@@ -28,6 +29,7 @@ int main() {
 	shapeSprite.setPosition(150,50);
 
 	int animationFrame = 0;
+	float yBorder=50;
 
 	while (window.isOpen())
 	{
@@ -47,17 +49,21 @@ int main() {
 		{
 			window.close();
 		}
-		if (movement == 0) {
-			shapeSprite.setTextureRect(sf::IntRect(0, 0, spriteSizeX, spriteSizeY));
-		}
-		else if (movement == 2) {
-			shapeSprite.move(0.f, 1.f);
-			shapeSprite.setTextureRect(sf::IntRect(spriteSizeX * animationFrame, spriteSizeY * 1, spriteSizeX, spriteSizeY));
-		}
-		else if (movement == 1) {
-			shapeSprite.move(0.f, -1.f);
-			shapeSprite.setTextureRect(sf::IntRect(spriteSizeX * animationFrame, 0, spriteSizeX, spriteSizeY));
-		}
+			if (movement == 0) {
+				shapeSprite.setTextureRect(sf::IntRect(0, 0, spriteSizeX, spriteSizeY));
+			}
+			else if (movement == 2 && yBorder != 600) {
+				shapeSprite.move(0.f, 1.f);
+				yBorder += 1;
+				printf("%f\n", yBorder);
+				shapeSprite.setTextureRect(sf::IntRect(spriteSizeX * animationFrame, spriteSizeY * 1, spriteSizeX, spriteSizeY));
+			}
+			else if (movement == 1 && yBorder != 0) {
+				shapeSprite.move(0.f, -1.f);
+				yBorder -= 1;
+				printf("%f\n", yBorder);
+				shapeSprite.setTextureRect(sf::IntRect(spriteSizeX * animationFrame, 0, spriteSizeX, spriteSizeY));
+			}
 		animationFrame++;
 		if (animationFrame >= 2) {
 			animationFrame = 2;
