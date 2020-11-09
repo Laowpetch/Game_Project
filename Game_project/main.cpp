@@ -88,6 +88,9 @@ int main() {
 			bulletSprite.move(0.9f, .0f);
 			xbullet += 0.9;
 		}
+		else if (i == 0) {
+			bulletSprite.setPosition(255, yBorder + 30);
+		}
 		if (xbullet >= 1200) {
 			i = 0;
 			xbullet = 225;
