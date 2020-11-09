@@ -11,6 +11,12 @@ int main() {
 	{
 		std::cout << "load failed" << std::endl;
 	}
+	//bullettexture
+	sf::Texture bulletTexture;
+	if (!bulletTexture.loadFromFile("bullet.png"))
+	{
+		std::cout << "load failed" << std::endl;
+	}
 	//playertexture
 	sf::Texture playerTexture;
 	if (!playerTexture.loadFromFile("player_plane.png"))
@@ -40,20 +46,29 @@ int main() {
 	int fspriteSizeY = playerTexture.getSize().y / 1;
 	fireSprite.setTextureRect(sf::IntRect(0, 0, fspriteSizeX, fspriteSizeY));
 	fireSprite.setPosition(90, 57);
+	//bullet
+	sf::Sprite bulletSprite;
+	bulletSprite.setTexture(bulletTexture);
 	//generalvariables
 	int animationFrame = 0;
 	int fireframe=0;
 	float yBorder=50;
 	int movement = 0;
+	int i = 0;
+	double xbullet = 225;
+	bulletSprite.setPosition(225, yBorder+30);
 	//gameloop
 	while (window.isOpen())
-	{	
+	{
 		movement = 0;
 		window.draw(backgroundSprite);
 		window.draw(playerSprite);
 		window.draw(fireSprite);
+		if (i == 1) {
+			window.draw(bulletSprite);
+		}
 		window.display();
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) 
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 		{
 			movement = 2;
 		}
@@ -65,22 +80,35 @@ int main() {
 		{
 			window.close();
 		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::K))
+		{
+			i = 1;
+		}
+		if (i == 1) {
+			bulletSprite.move(0.9f, .0f);
+			xbullet += 0.9;
+		}
+		if (xbullet >= 1200) {
+			i = 0;
+			xbullet = 225;
+			bulletSprite.setPosition(255, yBorder + 30);
+		}
 		if (movement == 0) {
 			playerSprite.setTextureRect(sf::IntRect(0, 0, spriteSizeX, spriteSizeY));
-			}
-			else if (movement == 2 && yBorder != 530) {
-				playerSprite.move(0.f, 1.f);
-				fireSprite.move(0.f, 1.f);
-				yBorder += 1;
-				playerSprite.setTextureRect(sf::IntRect(spriteSizeX * animationFrame, spriteSizeY * 1, spriteSizeX, spriteSizeY));
-			}
-			else if (movement == 1 && yBorder != 0) {
-				playerSprite.move(0.f, -1.f);
-				fireSprite.move(0.f, -1.f);
-				yBorder -= 1;
-				playerSprite.setTextureRect(sf::IntRect(spriteSizeX * animationFrame, 0, spriteSizeX, spriteSizeY));
-			}
-			fireSprite.setTextureRect(sf::IntRect(spriteSizeX * fireframe, 0, fspriteSizeX, fspriteSizeY));
+		}
+		else if (movement == 2 && yBorder != 530) {
+			playerSprite.move(0.f, 1.f);
+			fireSprite.move(0.f, 1.f);
+			yBorder += 1;
+			playerSprite.setTextureRect(sf::IntRect(spriteSizeX * animationFrame, spriteSizeY * 1, spriteSizeX, spriteSizeY));
+		}
+		else if (movement == 1 && yBorder != 0) {
+			playerSprite.move(0.f, -1.f);
+			fireSprite.move(0.f, -1.f);
+			yBorder -= 1;
+			playerSprite.setTextureRect(sf::IntRect(spriteSizeX * animationFrame, 0, spriteSizeX, spriteSizeY));
+		}
+		fireSprite.setTextureRect(sf::IntRect(spriteSizeX * fireframe, 0, fspriteSizeX, fspriteSizeY));
 		fireframe++;
 		if (fireframe >= 3) {
 			fireframe = 0;
