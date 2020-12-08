@@ -16,6 +16,7 @@ public:
 			bullet.getTop() < enemy.getPosition().y + enemy.getSize().y &&
 			bullet.getButtom() > enemy.getPosition().y) {
 			enemy.setPosition(sf::Vector2f(4234412, 4234412));
+			//delete(enemy);
 		}
 	}
 	void draw(sf::RenderWindow& window) {

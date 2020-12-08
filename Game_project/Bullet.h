@@ -1,10 +1,15 @@
 #pragma once
 #include<SFML/Graphics.hpp>
+#include "main.cpp"
 class Bullet {
 public:
-	Bullet(sf::Vector2f size) {
-		bullet.setSize(size);
-		bullet.setFillColor(sf::Color::Blue);
+	Bullet(sf::Sprite bullet) {
+		sf::Texture bulletTexture;
+		if (!bulletTexture.loadFromFile("bullet.png"))
+		{
+			std::cout << "load failed" << std::endl;
+		}
+		bullet.setTexture(bulletTexture);
 	}
 	void fire(int speed) {
 		bullet.move(speed, 0);

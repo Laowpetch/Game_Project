@@ -1,9 +1,34 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <math.h>
-#include "Bullet.h"
-#include "Enemy.h"
+#include<vector>
 using namespace sf;
+void shoot(float, float);
+void shot(float, float);
+sf::Texture* BULLET;
+class Bulleted {
+public:
+	sf::RectangleShape bullet;
+
+	void set(float x, float y)
+	{
+		bullet.setTexture(BULLET);
+		bullet.setSize(sf::Vector2f(30.0f, 30.0f));
+		bullet.setPosition(x, y);
+	}
+
+	sf::Vector2f GetPosition() { return bullet.getPosition(); }
+	//Collider GetCollider() { return Collider(bullet); }
+};
+
+Bulleted bullet[6];
+int chk_1[6] = { 0,0,0,0,0,0 };
+int pst = 2;
+int pst1[6];
+int chksup_1[1] = { 0 };
+int pst1sup[1];
+clock_t start = -0.2, end = 0;
+
 int main() {
 	//renderwindow
 	sf::RenderWindow window(sf::VideoMode(1200, 600), "Pachara Loawpetch 63010629");
@@ -48,17 +73,14 @@ int main() {
 	float yBorder=50;
 	int movement = 0;
 	int i = 0;
-	double xbullet = 225;
-	///////////////////////////////////////////
-	Enemy enemy(sf::Vector2f(50, 50));
-	std::vector<Bullet> bulletVec;
-	
-	enemy.setPos(sf::Vector2f(500, 50));
-	bool isFiring = false;
+	int a=0;
 	//gameloop
 	while (window.isOpen())
 	{
 		movement = 0;
+		sf::Vector2f pos = playerSprite.getPosition();
+		shoot(pos.x, pos.y);
+		shot(pos.x, pos.y);
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 		{
 			movement = 2;
@@ -71,14 +93,8 @@ int main() {
 		{
 			window.close();
 		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::K))
-		{
-			i = 1;
-		}
 		///////////////////
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::K)) {
-			isFiring = true;
-		}
+
 		if (movement == 0) {
 			playerSprite.setTextureRect(sf::IntRect(0, 0, spriteSizeX, spriteSizeY));
 		}
@@ -104,25 +120,50 @@ int main() {
 			animationFrame = 2;
 		}
 		/////////////////
-		if (isFiring == true) {
-			Bullet newBullet(sf::Vector2f(50, 5));
-			newBullet.setPos(sf::Vector2f(playerSprite.getPosition().x, playerSprite.getPosition().y));
-			bulletVec.push_back(newBullet);
-			isFiring = false;
-		}
 		window.draw(backgroundSprite);
 		window.draw(playerSprite);
 		window.draw(fireSprite);
-		enemy.draw(window);
-		for (int i = 0; i < bulletVec.size(); i++) {
-			bulletVec[i].draw(window);
-			bulletVec[i].fire(1);
-		}
-		for (int i = 0; i < bulletVec.size(); i++) {
-			enemy.checkColl(bulletVec[i]);
+		for (int i = 0; i < 6; i++) {
+			if (chk_1[i] == 1) {
+				window.draw(bullet[i].bullet);
+			}
 		}
 		window.display();
 		window.clear();
+		a++;
 	}
 	return 0;
+}
+void shoot(float x, float y) {
+	end = clock();
+	float dif = (float)(end - start) / CLOCKS_PER_SEC;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::K)&& dif>0.2) {
+		for (int i = 0; i < 6; i++) {
+			if (chk_1[i] == 0) {
+				if (pst == 2) {
+					bullet[i].set(x + 60.0f, y + 30.0f);
+				}
+				pst1[i] = pst;
+				chk_1[i] = 1;
+				start = clock();
+				break;
+			}
+		}
+	}
+}
+void shot(float x, float y) {
+	for (int i = 0; i < 6; i++) {
+		if (chk_1[i] == 1) {
+			float speed = 3.0f;
+			if (pst1[i] == 1) {
+				bullet[i].bullet.move(-speed, 0);
+			}
+			if (pst1[i] == 2) {
+				bullet[i].bullet.move(speed, 0);
+			}
+			if (bullet[i].bullet.getPosition().x > 1200) {
+				chk_1[i] = 0;
+			}
+		}
+	}
 }
