@@ -2,82 +2,121 @@
 #include <iostream>
 #include <math.h>
 #include<vector>
+#include<stdio.h>
 using namespace sf;
 void shoot(float, float);
 void shot(float, float);
-sf::Texture* BULLET;
 class Bulleted {
 public:
 	sf::RectangleShape bullet;
-
+	sf::Texture BULLET;
 	void set(float x, float y)
 	{
-		bullet.setTexture(BULLET);
+		BULLET.loadFromFile("bullet.png");
+		bullet.setTexture(&BULLET);
 		bullet.setSize(sf::Vector2f(30.0f, 30.0f));
 		bullet.setPosition(x, y);
 	}
 
-	sf::Vector2f GetPosition() { return bullet.getPosition(); }
+	sf::Vector2f GetPosition() 
+	{ 
+		return bullet.getPosition(); 
+	}
 	//Collider GetCollider() { return Collider(bullet); }
 };
-
 Bulleted bullet[6];
+
+class Enemy01 {
+public :
+	sf::RectangleShape enemy1;
+	sf::Texture EN1;
+	void set(float x, float y, float animationframe)
+	{
+		int animationFrame = animationframe;
+		EN1.loadFromFile("enemy1.png");
+		enemy1.setTexture(&EN1);
+		int spriteSizeX = EN1.getSize().x / 7;
+		int spriteSizeY = EN1.getSize().y / 1;
+		enemy1.setTextureRect(sf::IntRect(0, 0, spriteSizeX, spriteSizeY));
+		enemy1.setTextureRect(sf::IntRect(spriteSizeX * animationFrame, spriteSizeY * 0, spriteSizeX, spriteSizeY));
+		enemy1.setSize(sf::Vector2f(60.f, 60.f));
+		enemy1.setPosition(0,0);
+	}
+	sf::Vector2f GetPosition()
+	{
+		return enemy1.getPosition();
+	}
+};
+Enemy01 enemy1[10];
+
 int chk_1[6] = { 0,0,0,0,0,0 };
 int pst = 2;
 int pst1[6];
 int chksup_1[1] = { 0 };
 int pst1sup[1];
 clock_t start = -0.2, end = 0;
+Clock enemycl;
+Clock mainClock;
 
 int main() {
-	//renderwindow
+	int PHP;
+	int PHPMAX;
+	float enemyTime;
+	//renderwindow;;
 	sf::RenderWindow window(sf::VideoMode(1200, 600), "Pachara Loawpetch 63010629");
-	//bgtexture
+	//bgtexture;;
 	sf::Texture backgroundTexture;
 	if (!backgroundTexture.loadFromFile("bg.png"))
 	{
 		std::cout << "load failed" << std::endl;
 	}
-	//playertexture
+	//playertexture;;
 	sf::Texture playerTexture;
 	if (!playerTexture.loadFromFile("player_plane.png"))
 	{
 		std::cout << "load failed" << std::endl;
 	}
-	//firetexture
+	//firetexture;;
 	sf::Texture fireTexture;
 	if (!fireTexture.loadFromFile("fire.png"))
 	{
 		std::cout << "load failed" << std::endl;
 	}
-	//bg
+	//bg;;
 	sf::Sprite backgroundSprite;
 	backgroundSprite.setTexture(backgroundTexture);
-	//player
+	//player;;
 	sf::Sprite playerSprite;
 	playerSprite.setTexture(playerTexture);
 	int spriteSizeX = playerTexture.getSize().x/3;
 	int spriteSizeY = playerTexture.getSize().y/2;
 	playerSprite.setTextureRect(sf::IntRect(0, 0, spriteSizeX, spriteSizeY));
 	playerSprite.setPosition(150,50);
-	//fire
+	//fire;;
 	sf::Sprite fireSprite;
 	fireSprite.setTexture(fireTexture);
 	int fspriteSizeX = playerTexture.getSize().x / 4;
 	int fspriteSizeY = playerTexture.getSize().y / 1;
 	fireSprite.setTextureRect(sf::IntRect(0, 0, fspriteSizeX, fspriteSizeY));
 	fireSprite.setPosition(90, 57);
-	//generalvariables
+	//generalvariables;;
 	int animationFrame = 0;
 	int fireframe=0;
 	float yBorder=50;
 	int movement = 0;
 	int i = 0;
 	int a=0;
-	//gameloop
+	float time;
+	//gameloop;;
 	while (window.isOpen())
 	{
+		time = mainClock.getElapsedTime().asSeconds();
+		enemyTime = enemycl.getElapsedTime().asSeconds();
 		movement = 0;
+		if (enemyTime > 7.000) {
+			enemycl.restart();
+		}
+		printf("%f\n",time);
 		sf::Vector2f pos = playerSprite.getPosition();
 		shoot(pos.x, pos.y);
 		shot(pos.x, pos.y);
@@ -93,21 +132,21 @@ int main() {
 		{
 			window.close();
 		}
-		///////////////////
+		///////////////////;;
 
 		if (movement == 0) {
 			playerSprite.setTextureRect(sf::IntRect(0, 0, spriteSizeX, spriteSizeY));
 		}
-		else if (movement == 2 && yBorder != 530) {
-			playerSprite.move(0.f, 1.f);
-			fireSprite.move(0.f, 1.f);
-			yBorder += 1;
+		else if (movement == 2 && yBorder <= 530) {
+			playerSprite.move(0.f, 3.f);
+			fireSprite.move(0.f, 3.f);
+			yBorder += 3;
 			playerSprite.setTextureRect(sf::IntRect(spriteSizeX * animationFrame, spriteSizeY * 1, spriteSizeX, spriteSizeY));
 		}
-		else if (movement == 1 && yBorder != 0) {
-			playerSprite.move(0.f, -1.f);
-			fireSprite.move(0.f, -1.f);
-			yBorder -= 1;
+		else if (movement == 1 && yBorder >= 0) {
+			playerSprite.move(0.f, -3.f);
+			fireSprite.move(0.f, -3.f);
+			yBorder -= 3;
 			playerSprite.setTextureRect(sf::IntRect(spriteSizeX * animationFrame, 0, spriteSizeX, spriteSizeY));
 		}
 		fireSprite.setTextureRect(sf::IntRect(spriteSizeX * fireframe, 0, fspriteSizeX, fspriteSizeY));
@@ -119,10 +158,12 @@ int main() {
 		if (animationFrame >= 2) {
 			animationFrame = 2;
 		}
-		/////////////////
+		/////////////////;;
 		window.draw(backgroundSprite);
 		window.draw(playerSprite);
 		window.draw(fireSprite);
+		enemy1[0].set(0, 0,enemyTime);
+		window.draw(enemy1[0].enemy1);
 		for (int i = 0; i < 6; i++) {
 			if (chk_1[i] == 1) {
 				window.draw(bullet[i].bullet);
