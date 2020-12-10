@@ -4,9 +4,11 @@
 #include<vector>
 #include<stdio.h>
 using namespace sf;
+//functionprototype;;
 void shoot(float, float);
 void shot(float, float);
 void enemyFly();
+//bulletclass;;
 class Bulleted {
 public:
 	sf::RectangleShape bullet;
@@ -18,7 +20,6 @@ public:
 		bullet.setSize(sf::Vector2f(30.0f, 30.0f));
 		bullet.setPosition(x, y);
 	}
-
 	sf::Vector2f GetPosition() 
 	{ 
 		return bullet.getPosition(); 
@@ -26,7 +27,7 @@ public:
 	//Collider GetCollider() { return Collider(bullet); }
 };
 Bulleted bullet[6];
-
+//enemyclass;;
 class Enemy01 {
 public :
 	sf::RectangleShape enemy1;
@@ -57,20 +58,20 @@ public :
 	}
 };
 Enemy01 enemy1[10];
-
+//globalvariable;;
 int chk_1[6] = { 0,0,0,0,0,0 };
 int pst = 2;
 int pst1[6];
 int chksup_1[1] = { 0 };
 int pst1sup[1];
 int enemy1ch[10] = {0,0,0,0,0,0,0,0,0,0};
+int enemyRandomStatus;
 clock_t start = -0.2, end = 0;
 Clock enemycl;
 Clock mainClock;
-
+//mainfunction;;
 int main() {
-	int PHP;
-	int PHPMAX;
+	//generalvariable;;
 	float enemyTime;
 	//renderwindow;;
 	sf::RenderWindow window(sf::VideoMode(1200, 600), "Pachara Loawpetch 63010629");
@@ -115,9 +116,10 @@ int main() {
 	float yBorder=50;
 	int movement = 0;
 	int i = 0;
-	int a=0;
+	int frameNumber=0;
 	float time;
 	int timer;
+	//generalCommands
 	//gameloop;;
 	while (window.isOpen())
 	{
@@ -128,7 +130,6 @@ int main() {
 		if (enemyTime > 7.000) {
 			enemycl.restart();
 		}
-		//printf("%f\n",time);
 		sf::Vector2f pos = playerSprite.getPosition();
 		shoot(pos.x, pos.y);
 		shot(pos.x, pos.y);
@@ -145,7 +146,6 @@ int main() {
 			window.close();
 		}
 		///////////////////;;
-
 		if (movement == 0) {
 			playerSprite.setTextureRect(sf::IntRect(0, 0, spriteSizeX, spriteSizeY));
 		}
@@ -179,15 +179,18 @@ int main() {
 				window.draw(bullet[i].bullet);
 			}
 		}
-		/////enemymove;;
+		//enemymove;;
+		for (int i = 0; i < 10; i++) {
+			if (enemy1ch[i] == 0 && frameNumber%500==0) {
+				enemy1[i].set(1000, i * 80, enemyTime);
+				enemy1ch[i] = 1;
+				break;
+			}
+		}
 		for (int i = 0; i < 10; i++) {
 			float enemyPosition = enemy1[i].enemy1.getPosition().x;
 			if (enemyPosition < 0) {
 				enemy1ch[i] = 0;
-			}
-			if (enemy1ch[i] == 0) {
-				enemy1[i].set(1000, i * 80, enemyTime);
-				enemy1ch[i] = 1;
 			}
 		}
 		for (int i = 0; i <= 10; i++) {
@@ -200,12 +203,13 @@ int main() {
 				float speed = .5f;
 				enemy1[i].enemy1.move(-speed, 0);
 				enemy1[i].animation(enemyTime);
-			}
+				}
 		}
 		void enemyFly();
+		//windowcommands;;
 		window.display();
 		window.clear();
-		a++;
+		frameNumber++;
 	}
 	return 0;
 }
@@ -242,4 +246,3 @@ void shot(float x, float y) {
 		}
 	}
 }
-
