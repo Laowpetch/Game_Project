@@ -1,11 +1,12 @@
-#include <SFML/Graphics.hpp>
-#include <iostream>
-#include <math.h>
+#include<SFML/Graphics.hpp>
+#include<iostream>
+#include<math.h>
 #include<vector>
 #include<stdio.h>
 using namespace sf;
 void shoot(float, float);
 void shot(float, float);
+void enemyFly();
 class Bulleted {
 public:
 	sf::RectangleShape bullet;
@@ -40,7 +41,7 @@ public :
 		enemy1.setTextureRect(sf::IntRect(0, 0, spriteSizeX, spriteSizeY));
 		enemy1.setTextureRect(sf::IntRect(spriteSizeX * animationFrame, spriteSizeY * 0, spriteSizeX, spriteSizeY));
 		enemy1.setSize(sf::Vector2f(60.f, 60.f));
-		enemy1.setPosition(0,0);
+		enemy1.setPosition(x,y);
 	}
 	sf::Vector2f GetPosition()
 	{
@@ -54,6 +55,7 @@ int pst = 2;
 int pst1[6];
 int chksup_1[1] = { 0 };
 int pst1sup[1];
+int enemy1ch[10] = {0,0,0,0,0,0,0,0,0,0};
 clock_t start = -0.2, end = 0;
 Clock enemycl;
 Clock mainClock;
@@ -107,16 +109,18 @@ int main() {
 	int i = 0;
 	int a=0;
 	float time;
+	int timer;
 	//gameloop;;
 	while (window.isOpen())
 	{
 		time = mainClock.getElapsedTime().asSeconds();
+		timer = time;
 		enemyTime = enemycl.getElapsedTime().asSeconds();
 		movement = 0;
 		if (enemyTime > 7.000) {
 			enemycl.restart();
 		}
-		printf("%f\n",time);
+		//printf("%f\n",time);
 		sf::Vector2f pos = playerSprite.getPosition();
 		shoot(pos.x, pos.y);
 		shot(pos.x, pos.y);
@@ -162,13 +166,34 @@ int main() {
 		window.draw(backgroundSprite);
 		window.draw(playerSprite);
 		window.draw(fireSprite);
-		enemy1[0].set(0, 0,enemyTime);
-		window.draw(enemy1[0].enemy1);
 		for (int i = 0; i < 6; i++) {
 			if (chk_1[i] == 1) {
 				window.draw(bullet[i].bullet);
 			}
 		}
+		/////enemymove;;
+		for (int i = 0; i < 10; i++) {
+			float enemyPosition = enemy1[i].enemy1.getPosition().x;
+			if (enemyPosition < 0) {
+				enemy1ch[i] = 0;
+			}
+			if (enemy1ch[i] == 0) {
+				enemy1[i].set(1000, i * 80, enemyTime);
+				enemy1ch[i] = 1;
+			}
+		}
+		for (int i = 0; i <= 10; i++) {
+			if (enemy1ch[i] == 1) {
+				window.draw(enemy1[i].enemy1);
+			}
+		}
+		for (int i = 0; i < 10; i++) {
+			if (enemy1ch[i] == 1) {
+				float speed = .5f;
+				enemy1[i].enemy1.move(-speed, 0);
+			}
+		}
+		void enemyFly();
 		window.display();
 		window.clear();
 		a++;
@@ -208,3 +233,4 @@ void shot(float x, float y) {
 		}
 	}
 }
+
