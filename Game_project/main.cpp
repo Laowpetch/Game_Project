@@ -43,6 +43,14 @@ public :
 		enemy1.setSize(sf::Vector2f(60.f, 60.f));
 		enemy1.setPosition(x,y);
 	}
+	void animation(float animationframe) {
+		int animationFrame = animationframe;
+		int spriteSizeX = EN1.getSize().x / 7;
+		int spriteSizeY = EN1.getSize().y / 1;
+		enemy1.setTextureRect(sf::IntRect(0, 0, spriteSizeX, spriteSizeY));
+		enemy1.setTextureRect(sf::IntRect(spriteSizeX * animationFrame, spriteSizeY * 0, spriteSizeX, spriteSizeY));
+
+	}
 	sf::Vector2f GetPosition()
 	{
 		return enemy1.getPosition();
@@ -191,6 +199,7 @@ int main() {
 			if (enemy1ch[i] == 1) {
 				float speed = .5f;
 				enemy1[i].enemy1.move(-speed, 0);
+				enemy1[i].animation(enemyTime);
 			}
 		}
 		void enemyFly();
