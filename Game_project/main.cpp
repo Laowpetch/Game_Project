@@ -117,14 +117,18 @@ int main() {
 	int movement = 0;
 	int i = 0;
 	int frameNumber=0;
-	float time;
+	float ttime;
 	int timer;
 	//generalCommands
+	//printf("%d\n", frameNumber);
 	//gameloop;;
 	while (window.isOpen())
 	{
-		time = mainClock.getElapsedTime().asSeconds();
-		timer = time;
+		//randomNumber;;
+		srand(time(NULL));
+		//other;;
+		ttime = mainClock.getElapsedTime().asSeconds();
+		timer = ttime;
 		enemyTime = enemycl.getElapsedTime().asSeconds();
 		movement = 0;
 		if (enemyTime > 7.000) {
@@ -182,7 +186,7 @@ int main() {
 		//enemymove;;
 		for (int i = 0; i < 10; i++) {
 			if (enemy1ch[i] == 0 && frameNumber%500==0) {
-				enemy1[i].set(1000, i * 80, enemyTime);
+				enemy1[i].set(1000, rand()%600, enemyTime);
 				enemy1ch[i] = 1;
 				break;
 			}
