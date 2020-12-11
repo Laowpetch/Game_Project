@@ -126,6 +126,7 @@ int main() {
 	{
 		//randomNumber;;
 		srand(time(NULL));
+		rand();
 		//other;;
 		ttime = mainClock.getElapsedTime().asSeconds();
 		timer = ttime;
@@ -214,6 +215,7 @@ int main() {
 void shoot(float x, float y) {
 	end = clock();
 	float dif = (float)(end - start) / CLOCKS_PER_SEC;
+
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::K)&& dif>0.2) {
 		for (int i = 0; i < 6; i++) {
 			if (chk_1[i] == 0) {
@@ -248,9 +250,8 @@ void enemyGenerate(float enemyTime) {
 	end = clock();
 	float dif = (float)(end - start) / CLOCKS_PER_SEC;
 	for (int i = 0; i < 10; i++) {
-		if (enemy1ch[i] == 0 && dif==0.2) {
-			printf("xxxxxxxxxxxxxx");
-			enemy1[i].set(1000, rand() % 600, enemyTime);
+		if (enemy1ch[i] == 0 && dif > .75) {
+			enemy1[i].set(1000, rand() % 500, enemyTime);
 			enemy1ch[i] = 1;
 			start = clock();
 			break;
