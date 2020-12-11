@@ -8,6 +8,7 @@ using namespace sf;
 void shoot(float, float);
 void shot(float, float);
 void enemyGenerate(float);
+void BE1Checkcollision();
 //bulletclass;;
 class Bulleted {
 public:
@@ -124,9 +125,11 @@ int main() {
 	//gameloop;;
 	while (window.isOpen())
 	{
+		int a;
 		//randomNumber;;
 		srand(time(NULL));
-		rand();
+		a=rand();
+		a=rand();
 		//other;;
 		ttime = mainClock.getElapsedTime().asSeconds();
 		timer = ttime;
@@ -155,15 +158,15 @@ int main() {
 			playerSprite.setTextureRect(sf::IntRect(0, 0, spriteSizeX, spriteSizeY));
 		}
 		else if (movement == 2 && yBorder <= 530) {
-			playerSprite.move(0.f, 3.f);
-			fireSprite.move(0.f, 3.f);
-			yBorder += 3;
+			playerSprite.move(0.f, 2.f);
+			fireSprite.move(0.f, 2.f);
+			yBorder += 2;
 			playerSprite.setTextureRect(sf::IntRect(spriteSizeX * animationFrame, spriteSizeY * 1, spriteSizeX, spriteSizeY));
 		}
 		else if (movement == 1 && yBorder >= 0) {
-			playerSprite.move(0.f, -3.f);
-			fireSprite.move(0.f, -3.f);
-			yBorder -= 3;
+			playerSprite.move(0.f, -2.f);
+			fireSprite.move(0.f, -2.f);
+			yBorder -= 2;
 			playerSprite.setTextureRect(sf::IntRect(spriteSizeX * animationFrame, 0, spriteSizeX, spriteSizeY));
 		}
 		fireSprite.setTextureRect(sf::IntRect(spriteSizeX * fireframe, 0, fspriteSizeX, fspriteSizeY));
@@ -204,7 +207,9 @@ int main() {
 				enemy1[i].animation(enemyTime);
 				}
 		}
-		void enemyFly();
+
+		BE1Checkcollision();
+
 		//windowcommands;;
 		window.display();
 		window.clear();
@@ -255,6 +260,52 @@ void enemyGenerate(float enemyTime) {
 			enemy1ch[i] = 1;
 			start = clock();
 			break;
+		}
+	}
+}
+void BE1Checkcollision() {
+	for (int i = 0; i < 10; i++) {
+		if (bullet[0].GetPosition().y - enemy1[i].GetPosition().y < 30. && bullet[0].GetPosition().y - enemy1[i].GetPosition().y > -32.&&enemy1[i].GetPosition().x-bullet[0].GetPosition().x<=30.) 
+		{
+			chk_1[0] = 0;
+			enemy1ch[i] = 0;
+			bullet[0].set(-100, 100);
+			enemy1[i].set(1300, 700,1);
+		}
+		if (bullet[1].GetPosition().y - enemy1[i].GetPosition().y < 30. && bullet[1].GetPosition().y - enemy1[i].GetPosition().y > -32. && enemy1[i].GetPosition().x - bullet[1].GetPosition().x <= 30.)
+		{
+			chk_1[1] = 0;
+			enemy1ch[i] = 0;
+			bullet[1].set(-100, 100);
+			enemy1[i].set(1300, 700, 1);
+		}
+		if (bullet[2].GetPosition().y - enemy1[i].GetPosition().y < 30. && bullet[2].GetPosition().y - enemy1[i].GetPosition().y > -32. && enemy1[i].GetPosition().x - bullet[2].GetPosition().x <= 30.)
+		{
+			chk_1[2] = 0;
+			enemy1ch[i] = 0;
+			bullet[2].set(-100, 100);
+			enemy1[i].set(1300, 700, 1);
+		}
+		if (bullet[3].GetPosition().y - enemy1[i].GetPosition().y < 30. && bullet[3].GetPosition().y - enemy1[i].GetPosition().y > -32. && enemy1[i].GetPosition().x - bullet[3].GetPosition().x <= 30.)
+		{
+			chk_1[3] = 0;
+			enemy1ch[i] = 0;
+			bullet[3].set(-100, 100);
+			enemy1[i].set(1300, 700, 1);
+		}
+		if (bullet[4].GetPosition().y - enemy1[i].GetPosition().y < 30. && bullet[4].GetPosition().y - enemy1[i].GetPosition().y > -32. && enemy1[i].GetPosition().x - bullet[4].GetPosition().x <= 30.)
+		{
+			chk_1[4] = 0;
+			enemy1ch[i] = 0;
+			bullet[4].set(-100, 100);
+			enemy1[i].set(1300, 700, 1);
+		}
+		if (bullet[5].GetPosition().y - enemy1[i].GetPosition().y < 30. && bullet[5].GetPosition().y - enemy1[i].GetPosition().y > -32. && enemy1[i].GetPosition().x - bullet[5].GetPosition().x <= 30.)
+		{
+			chk_1[5] = 0;
+			enemy1ch[i] = 0;
+			bullet[5].set(-100, 100);
+			enemy1[i].set(1300, 700, 1);
 		}
 	}
 }
