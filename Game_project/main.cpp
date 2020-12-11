@@ -7,7 +7,7 @@ using namespace sf;
 //functionprototype;;
 void shoot(float, float);
 void shot(float, float);
-void enemyFly();
+void enemyGenerate(float);
 //bulletclass;;
 class Bulleted {
 public:
@@ -184,13 +184,7 @@ int main() {
 			}
 		}
 		//enemymove;;
-		for (int i = 0; i < 10; i++) {
-			if (enemy1ch[i] == 0 && frameNumber%500==0) {
-				enemy1[i].set(1000, rand()%600, enemyTime);
-				enemy1ch[i] = 1;
-				break;
-			}
-		}
+		enemyGenerate(enemyTime);
 		for (int i = 0; i < 10; i++) {
 			float enemyPosition = enemy1[i].enemy1.getPosition().x;
 			if (enemyPosition < 0) {
@@ -247,6 +241,19 @@ void shot(float x, float y) {
 			if (bullet[i].bullet.getPosition().x > 1200) {
 				chk_1[i] = 0;
 			}
+		}
+	}
+}
+void enemyGenerate(float enemyTime) {
+	end = clock();
+	float dif = (float)(end - start) / CLOCKS_PER_SEC;
+	for (int i = 0; i < 10; i++) {
+		if (enemy1ch[i] == 0 && dif==0.2) {
+			printf("xxxxxxxxxxxxxx");
+			enemy1[i].set(1000, rand() % 600, enemyTime);
+			enemy1ch[i] = 1;
+			start = clock();
+			break;
 		}
 	}
 }
