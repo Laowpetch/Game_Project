@@ -180,7 +180,7 @@ int main() {
 	sf::Texture overTexture;
 	overTexture.loadFromFile("Gameover.jpg");
 	gameover.setTexture(&overTexture);
-	
+
 	//generalvariables;;
 	int animationFrame = 0;
 	int fireframe=0;
@@ -330,6 +330,11 @@ int main() {
 			else {
 				EXIT.setFillColor(Color::White);
 			}
+
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+				window.close();
+			}
+
 			window.draw(header);
 			window.draw(NAME);
 			window.draw(START);
@@ -486,17 +491,6 @@ int main() {
 				window.draw(item.Item);
 			}
 
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::P)) {
-				while (1) {
-					if (sf::Keyboard::isKeyPressed(sf::Keyboard::C)) {
-						break;
-					}
-					if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
-						state = 0;
-						break;
-					}
-				}
-			}
 			if (bloodc >= 4) {
 				window.draw(l4.life);
 			}
