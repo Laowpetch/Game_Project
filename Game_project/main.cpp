@@ -9,15 +9,36 @@ using namespace sf;
 void shoot(float, float);
 void shot(float, float);
 void enemyGenerate(float);
-void BE1Checkcollision (float);
+void BE1Checkcollision(float);
 void III();
 void IIImove();
+
+class BBGG {
+public:
+	sf::RectangleShape bg;
+	sf::Texture b;
+	void set() {
+		b.loadFromFile("bg.jpg");
+		bg.setTexture(&b);
+		bg.setSize(sf::Vector2f(3600,600));
+		bg.setPosition(0, 0);
+	}
+	void animation(float animationFrame) {
+		int spriteSizeX = bg.getSize().x / 1;
+		int spriteSizeY = bg.getSize().y / 1;
+		bg.setTextureRect(sf::IntRect(0, 0, spriteSizeX, spriteSizeY));
+		bg.setTextureRect(sf::IntRect(spriteSizeX * animationFrame, spriteSizeY * 0, spriteSizeX, spriteSizeY));
+
+	}
+
+};
+BBGG background;
 
 class LIFE {
 public:
 	sf::RectangleShape life;
 	sf::Texture ll;
-	void set(float x,float y) {
+	void set(float x, float y) {
 		ll.loadFromFile("life.png");
 		life.setTexture(&ll);
 		life.setSize(sf::Vector2f(60, 60));
@@ -60,20 +81,20 @@ public:
 		bullet.setSize(sf::Vector2f(30.0f, 30.0f));
 		bullet.setPosition(x, y);
 	}
-	sf::Vector2f GetPosition() 
-	{ 
-		return bullet.getPosition(); 
-	}
-	FloatRect GetGlobleBounds() 
+	sf::Vector2f GetPosition()
 	{
-		return bullet.getGlobalBounds(); 
+		return bullet.getPosition();
+	}
+	FloatRect GetGlobleBounds()
+	{
+		return bullet.getGlobalBounds();
 	};
 };
 Bulleted bullet[6];
 
 //enemyclass;;
 class Enemy01 {
-public :
+public:
 	sf::RectangleShape enemy1;
 	sf::Texture EN1;
 	void set(float x, float y, float animationframe)
@@ -86,7 +107,7 @@ public :
 		enemy1.setTextureRect(sf::IntRect(0, 0, spriteSizeX, spriteSizeY));
 		enemy1.setTextureRect(sf::IntRect(spriteSizeX * animationFrame, spriteSizeY * 0, spriteSizeX, spriteSizeY));
 		enemy1.setSize(sf::Vector2f(60.f, 60.f));
-		enemy1.setPosition(x,y);
+		enemy1.setPosition(x, y);
 	}
 	void animation(float animationframe) {
 		int animationFrame = animationframe;
@@ -100,9 +121,9 @@ public :
 	{
 		return enemy1.getPosition();
 	}
-	FloatRect GetGlobleBounds() 
-	{ 
-		return enemy1.getGlobalBounds(); 
+	FloatRect GetGlobleBounds()
+	{
+		return enemy1.getGlobalBounds();
 	};
 };
 Enemy01 enemy1[10];
@@ -114,7 +135,7 @@ int pst = 2;
 int pst1[6];
 int chksup_1[1] = { 0 };
 int pst1sup[1];
-int enemy1ch[10] = {0,0,0,0,0,0,0,0,0,0};
+int enemy1ch[10] = { 0,0,0,0,0,0,0,0,0,0 };
 int enemyRandomStatus;
 int bloodc = 4;
 int kanan = 0;
@@ -123,56 +144,55 @@ Clock enemycl;
 Clock mainClock;
 Clock bloodClock;
 Clock heartclock;
+Clock bgclock;
 
 //mainfunction;;
 int main() {
-	
+
 	//generalvariable;;
 	float enemyTime;
-	
+
 	//renderwindow;;
 	sf::RenderWindow window(sf::VideoMode(1200, 600), "Pachara Loawpetch 63010629");
-	
+
 	//bgtexture;;
 	sf::Texture backgroundTexture;
 	if (!backgroundTexture.loadFromFile("bg.png"))
 	{
 		std::cout << "load failed" << std::endl;
 	}
-	
+
 	//playertexture;;
 	sf::Texture playerTexture;
 	if (!playerTexture.loadFromFile("player_plane.png"))
 	{
 		std::cout << "load failed" << std::endl;
 	}
-	
+
 	//firetexture;;
 	sf::Texture fireTexture;
 	if (!fireTexture.loadFromFile("fire.png"))
 	{
 		std::cout << "load failed" << std::endl;
 	}
+
 	
-	//bg;;
-	sf::Sprite backgroundSprite;
-	backgroundSprite.setTexture(backgroundTexture);
 
 	//player;;
 	sf::Sprite playerSprite;
 	playerSprite.setTexture(playerTexture);
-	int spriteSizeX = playerTexture.getSize().x/3;
-	int spriteSizeY = playerTexture.getSize().y/2;
+	int spriteSizeX = playerTexture.getSize().x / 3;
+	int spriteSizeY = playerTexture.getSize().y / 2;
 	playerSprite.setTextureRect(sf::IntRect(0, 0, spriteSizeX, spriteSizeY));
-	playerSprite.setPosition(150,50);
-	
+	playerSprite.setPosition(150, 300);
+
 	//fire;;
 	sf::Sprite fireSprite;
 	fireSprite.setTexture(fireTexture);
 	int fspriteSizeX = playerTexture.getSize().x / 4;
 	int fspriteSizeY = playerTexture.getSize().y / 1;
 	fireSprite.setTextureRect(sf::IntRect(0, 0, fspriteSizeX, fspriteSizeY));
-	fireSprite.setPosition(90, 57);
+	fireSprite.setPosition(90, 307);
 
 	//gameover
 	sf::RectangleShape gameover;
@@ -183,16 +203,16 @@ int main() {
 
 	//generalvariables;;
 	int animationFrame = 0;
-	int fireframe=0;
-	float yBorder=50;
+	int fireframe = 0;
+	float yBorder = 300;
 	int movement = 0;
 	int i = 0;
-	int frameNumber=0;
+	int frameNumber = 0;
 	float ttime;
 	float bloodTime;
 	int timer;
-	int state=0;
-	
+	int state = 0;
+
 	//Fontsetting;;
 	Font gameFont;
 	gameFont.loadFromFile("FrostbiteBossFight-dL0Z.ttf");
@@ -235,7 +255,7 @@ int main() {
 	HIGHSCORE.setString("HIGHSCORE");
 	HIGHSCORE.setCharacterSize(35);
 	HIGHSCORE.setPosition(100, 375);
-	
+
 	//EXITatmenu
 	EXIT.setFont(gameFont);
 	EXIT.setOutlineColor(Color::Black);
@@ -245,7 +265,7 @@ int main() {
 	EXIT.setString("EXIT");
 	EXIT.setCharacterSize(35);
 	EXIT.setPosition(100, 475);
-	
+
 	//NAMEatmenu
 	NAME.setFont(gameFont);
 	NAME.setOutlineColor(Color::White);
@@ -276,9 +296,11 @@ int main() {
 	l3.set(200, 28);
 	l4.set(265, 28);
 
+	background.set();
+
 	//gameloop;;
 	while (window.isOpen())
-	{	
+	{
 		
 		//menu;;
 		if (state == 0) {
@@ -322,7 +344,7 @@ int main() {
 			if (mouse.x > 100 and mouse.x < 154 and mouse.y > 484 and mouse.y < 515)
 			{
 				EXIT.setFillColor(Color::Blue);
-				if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) 
+				if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 				{
 					window.close();
 				}
@@ -344,11 +366,12 @@ int main() {
 			window.display();
 			window.clear();
 		}
-		
+
 		//playingstate
 		else if (state == 1) {
 			int a;
 			float htime;
+			float ba;
 			//randomNumber;;
 			srand(time(NULL));
 			a = rand();
@@ -357,6 +380,7 @@ int main() {
 			//other;;
 			score.setString(std::to_string(kanan));
 
+			ba = bgclock.getElapsedTime().asSeconds();
 			ttime = mainClock.getElapsedTime().asSeconds();
 			timer = ttime;
 			enemyTime = enemycl.getElapsedTime().asSeconds();
@@ -401,7 +425,7 @@ int main() {
 				}
 				playerSprite.setTextureRect(sf::IntRect(spriteSizeX * animationFrame, spriteSizeY * 1, spriteSizeX, spriteSizeY));
 			}
-			else if (movement == 1 && yBorder >= 0) {
+			else if (movement == 1 && yBorder >= 81) {
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::RShift)) {
 					playerSprite.move(0.f, -2.f);
 					fireSprite.move(0.f, -2.f);
@@ -425,7 +449,14 @@ int main() {
 				animationFrame = 2;
 			}
 
-			window.draw(backgroundSprite);
+			if (ba >= 70) {
+				bgclock.restart();
+				ba = 0;
+			}
+			background.animation(ba/100);
+			window.draw(background.bg);
+
+
 			window.draw(playerSprite);
 			window.draw(fireSprite);
 			for (int i = 0; i < 6; i++) {
@@ -481,7 +512,7 @@ int main() {
 			III();
 			IIImove();
 
-			if(bloodc<=0) {
+			if (bloodc <= 0) {
 				state = 2;
 			}
 			if (bloodc < 0) {
@@ -510,14 +541,14 @@ int main() {
 			frameNumber++;
 		}
 		else if (state == 2) {
-		window.draw(gameover);
-		window.draw(restart);
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
-			state = 0;
+			window.draw(gameover);
+			window.draw(restart);
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
+				state = 0;
+			}
+			window.display();
+			window.clear();
 		}
-		window.display();
-		window.clear();
-	}
 	}
 	return 0;
 }
@@ -525,7 +556,7 @@ void shoot(float x, float y) {
 	end = clock();
 	float dif = (float)(end - start) / CLOCKS_PER_SEC;
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::K)&& dif>0.2) {
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::K) && dif > 0.2) {
 		for (int i = 0; i < 6; i++) {
 			if (chk_1[i] == 0) {
 				if (pst == 2) {
@@ -560,7 +591,7 @@ void enemyGenerate(float enemyTime) {
 	float dif = (float)(end - start) / CLOCKS_PER_SEC;
 	for (int i = 0; i < 10; i++) {
 		if (enemy1ch[i] == 0 && dif > .75) {
-			enemy1[i].set(1300, rand() % 500, enemyTime);
+			enemy1[i].set(1300, (rand() % 419) + 81, enemyTime);
 			enemy1ch[i] = 1;
 			start = clock();
 			break;
@@ -584,8 +615,8 @@ void BE1Checkcollision(float bloodTime) {
 }
 void III() {
 	int a = rand();
-	if (heartItem == 0 && a%23 == 0) {
-		item.set(1700, rand() % 570);
+	if (heartItem == 0 && a % 23 == 0) {
+		item.set(1700, (rand() % 419) + 81);
 		heartItem = 1;
 	}
 }
