@@ -27,7 +27,10 @@ public:
 	{ 
 		return bullet.getPosition(); 
 	}
-	FloatRect GetGlobleBounds() { return bullet.getGlobalBounds(); };
+	FloatRect GetGlobleBounds() 
+	{
+		return bullet.getGlobalBounds(); 
+	};
 };
 Bulleted bullet[6];
 
@@ -232,6 +235,8 @@ int main() {
 	{
 		//menu;;
 		if (state == 0) {
+
+
 			//menubg;;
 			sf::RectangleShape menubg;
 			menubg.setSize(sf::Vector2f(1200, 600));
@@ -243,9 +248,15 @@ int main() {
 			//menuButton
 			Vector2i mouse = Mouse::getPosition(window);
 
+
 			if (mouse.x > 100 and mouse.x < 172 and mouse.y>284 and mouse.y < 316) {
 				START.setFillColor(Color::Blue);
 				if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+					int enemy1ch[10] = { 0,0,0,0,0,0,0,0,0,0 };
+					int chk_1[6] = { 0,0,0,0,0,0 };
+					bloodc = 4;
+					mainClock.restart();
+
 					state = 1;
 				}
 			}
@@ -276,7 +287,6 @@ int main() {
 			window.draw(START);
 			window.draw(HIGHSCORE);
 			window.draw(EXIT);
-			
 			//windowcommand;;
 			window.display();
 			window.clear();
@@ -404,10 +414,8 @@ int main() {
 			for (int i = 0; i < 10; i++) {
 				if (enemy1ch[i] == 1) {
 					float speed = .5f;
-
-					//enemymovement;;
-					if (timer > 50) {
-						speed = timer / 100;
+					if (ttime > 50) {
+						speed = ttime / 100;
 					}
 					enemy1[i].enemy1.move(-speed, 0);
 					enemy1[i].animation(enemyTime);
@@ -417,7 +425,7 @@ int main() {
 			if (bloodc != 0) {
 				window.draw(blood);
 			}
-			if (bloodc == 0) {
+			else {
 				window.draw(gameover);
 				window.draw(restart);
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
