@@ -159,10 +159,24 @@ int main() {
 	//Fontsetting;;
 	Font gameFont;
 	gameFont.loadFromFile("FrostbiteBossFight-dL0Z.ttf");
+	Font headerFont;
+	headerFont.loadFromFile("BigSpace-rPKx.ttf");
+	Text header;
 	Text START;
 	Text HIGHSCORE;
 	Text EXIT;
 	Text NAME;
+
+	//Header
+	header.setFont(headerFont);
+	header.setOutlineColor(Color::White);
+	header.setOutlineThickness(2);
+	header.setFillColor(Color::Black);
+	header.setStyle(Text::Italic);
+	header.setString("Defending the world");
+	header.setCharacterSize(60);
+	header.setPosition(100, 75);
+
 	
 	//STARTatmenu
 	START.setFont(gameFont);
@@ -172,7 +186,7 @@ int main() {
 	START.setStyle(Text::Regular);
 	START.setString("START");
 	START.setCharacterSize(35);
-	START.setPosition(150, 200);
+	START.setPosition(100, 275);
 
 	//HIFHGSCOREatmenu
 	HIGHSCORE.setFont(gameFont);
@@ -182,7 +196,7 @@ int main() {
 	HIGHSCORE.setStyle(Text::Regular);
 	HIGHSCORE.setString("HIGHSCORE");
 	HIGHSCORE.setCharacterSize(35);
-	HIGHSCORE.setPosition(150, 300);
+	HIGHSCORE.setPosition(100, 375);
 	
 	//EXITatmenu
 	EXIT.setFont(gameFont);
@@ -192,7 +206,7 @@ int main() {
 	EXIT.setStyle(Text::Regular);
 	EXIT.setString("EXIT");
 	EXIT.setCharacterSize(35);
-	EXIT.setPosition(150, 400);
+	EXIT.setPosition(100, 475);
 	
 	//NAMEatmenu
 	NAME.setFont(gameFont);
@@ -202,7 +216,7 @@ int main() {
 	NAME.setStyle(Text::Regular);
 	NAME.setString("Pachara  Loawpetch  63010629");
 	NAME.setCharacterSize(20);
-	NAME.setPosition(900, 550);
+	NAME.setPosition(925, 570);
 
 	//gameloop;;
 	while (window.isOpen())
@@ -237,6 +251,7 @@ int main() {
 					window.close();
 				}
 			}
+			window.draw(header);
 			window.draw(NAME);
 			window.draw(START);
 			window.draw(HIGHSCORE);
