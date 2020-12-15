@@ -162,10 +162,12 @@ int main() {
 	Text START;
 	Text HIGHSCORE;
 	Text EXIT;
+	Text NAME;
 	
 	//STARTatmenu
 	START.setFont(gameFont);
 	START.setOutlineColor(Color::Black);
+	START.setOutlineThickness(5);
 	START.setFillColor(Color::White);
 	START.setStyle(Text::Regular);
 	START.setString("START");
@@ -175,6 +177,7 @@ int main() {
 	//HIFHGSCOREatmenu
 	HIGHSCORE.setFont(gameFont);
 	HIGHSCORE.setOutlineColor(Color::Black);
+	HIGHSCORE.setOutlineThickness(5);
 	HIGHSCORE.setFillColor(Color::White);
 	HIGHSCORE.setStyle(Text::Regular);
 	HIGHSCORE.setString("HIGHSCORE");
@@ -184,11 +187,22 @@ int main() {
 	//EXITatmenu
 	EXIT.setFont(gameFont);
 	EXIT.setOutlineColor(Color::Black);
+	EXIT.setOutlineThickness(5);
 	EXIT.setFillColor(Color::White);
 	EXIT.setStyle(Text::Regular);
 	EXIT.setString("EXIT");
 	EXIT.setCharacterSize(35);
 	EXIT.setPosition(150, 400);
+	
+	//NAMEatmenu
+	NAME.setFont(gameFont);
+	NAME.setOutlineColor(Color::White);
+	NAME.setOutlineThickness(3);
+	NAME.setFillColor(Color::Black);
+	NAME.setStyle(Text::Regular);
+	NAME.setString("Pachara  Loawpetch  63010629");
+	NAME.setCharacterSize(20);
+	NAME.setPosition(900, 550);
 
 	//gameloop;;
 	while (window.isOpen())
@@ -200,7 +214,7 @@ int main() {
 			sf::RectangleShape menubg;
 			menubg.setSize(sf::Vector2f(1200, 600));
 			sf::Texture menuTexture;
-			menuTexture.loadFromFile("menubg.jpeg");
+			menuTexture.loadFromFile("menubg.jpg");
 			menubg.setTexture(&menuTexture);
 			window.draw(menubg);
 
@@ -223,7 +237,7 @@ int main() {
 					window.close();
 				}
 			}
-
+			window.draw(NAME);
 			window.draw(START);
 			window.draw(HIGHSCORE);
 			window.draw(EXIT);
@@ -272,15 +286,32 @@ int main() {
 				playerSprite.setTextureRect(sf::IntRect(0, 0, spriteSizeX, spriteSizeY));
 			}
 			else if (movement == 2 && yBorder <= 530) {
-				playerSprite.move(0.f, 2.f);
-				fireSprite.move(0.f, 2.f);
-				yBorder += 2;
+
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) {
+					playerSprite.move(0.f, 1.f);
+					fireSprite.move(0.f, 1.f);
+					yBorder += 1;
+					playerSprite.setTextureRect(sf::IntRect(spriteSizeX * animationFrame, spriteSizeY * 1, spriteSizeX, spriteSizeY));
+				}
+				else {
+					playerSprite.move(0.f, 2.f);
+					fireSprite.move(0.f, 2.f);
+					yBorder += 2;
+				}
 				playerSprite.setTextureRect(sf::IntRect(spriteSizeX * animationFrame, spriteSizeY * 1, spriteSizeX, spriteSizeY));
 			}
 			else if (movement == 1 && yBorder >= 0) {
-				playerSprite.move(0.f, -2.f);
-				fireSprite.move(0.f, -2.f);
-				yBorder -= 2;
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) {
+					playerSprite.move(0.f,- 1.f);
+					fireSprite.move(0.f, -1.f);
+					yBorder -= 1;
+					playerSprite.setTextureRect(sf::IntRect(spriteSizeX * animationFrame, spriteSizeY * 1, spriteSizeX, spriteSizeY));
+				}
+				else {
+					playerSprite.move(0.f, -2.f);
+					fireSprite.move(0.f, -2.f);
+					yBorder -= 2;
+				}
 				playerSprite.setTextureRect(sf::IntRect(spriteSizeX * animationFrame, 0, spriteSizeX, spriteSizeY));
 			}
 			fireSprite.setTextureRect(sf::IntRect(spriteSizeX * fireframe, 0, fspriteSizeX, fspriteSizeY));
@@ -303,7 +334,10 @@ int main() {
 			}
 
 			//blood
-			if (bloodc == 3) {
+			if (bloodc == 4) {
+				blood.setSize(sf::Vector2f(200, 25));
+			}
+			else if (bloodc == 3) {
 				blood.setSize(sf::Vector2f(150, 25));
 			}
 			else if (bloodc == 2) {
