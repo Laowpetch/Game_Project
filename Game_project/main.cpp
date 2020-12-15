@@ -21,7 +21,7 @@ public:
 	void set(float x, float y) {
 		II.loadFromFile("heart.png");
 		Item.setTexture(&II);
-		Item.setSize(sf::Vector2f(30.f, 30.f));
+		Item.setSize(sf::Vector2f(40.f, 40.f));
 		Item.setPosition(x, y);
 	}
 	sf::Vector2f GetPosition()
@@ -98,7 +98,6 @@ Enemy01 enemy1[10];
 //globalvariable;;
 
 int heartItem = 0;
-
 int chk_1[6] = { 0,0,0,0,0,0 };
 int pst = 2;
 int pst1[6];
@@ -107,6 +106,7 @@ int pst1sup[1];
 int enemy1ch[10] = {0,0,0,0,0,0,0,0,0,0};
 int enemyRandomStatus;
 int bloodc = 4;
+int kanan = 0;
 clock_t start = -0.2, end = 0;
 Clock enemycl;
 Clock mainClock;
@@ -199,6 +199,7 @@ int main() {
 	Text EXIT;
 	Text NAME;
 	Text restart;
+	Text score;
 
 	//Header
 	header.setFont(headerFont);
@@ -259,9 +260,18 @@ int main() {
 	restart.setCharacterSize(50);
 	restart.setPosition(180, 400);
 
+	//score
+	score.setFont(headerFont);
+	score.setFillColor(Color::White);
+	score.setStyle(Text::Regular);
+	score.setCharacterSize(50);
+	score.setPosition(1000, 25);
+
+
 	//gameloop;;
 	while (window.isOpen())
 	{	
+
 		//menu;;
 		if (state == 0) {
 
@@ -281,11 +291,16 @@ int main() {
 			if (mouse.x > 100 and mouse.x < 172 and mouse.y>284 and mouse.y < 316) {
 				START.setFillColor(Color::Blue);
 				if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+					kanan = 0;
 					int enemy1ch[10] = { 0,0,0,0,0,0,0,0,0,0 };
+					heartItem = 0;
 					int chk_1[6] = { 0,0,0,0,0,0 };
 					bloodc = 4;
 					mainClock.restart();
 					state = 1;
+					for (int i = 0; i < 10; i++) {
+						enemy1[i].set(1300, 700, 1);
+					}
 				}
 			}
 			else {
@@ -330,6 +345,8 @@ int main() {
 			a = rand();
 
 			//other;;
+			score.setString(std::to_string(kanan));
+
 			ttime = mainClock.getElapsedTime().asSeconds();
 			timer = ttime;
 			enemyTime = enemycl.getElapsedTime().asSeconds();
@@ -361,7 +378,7 @@ int main() {
 			}
 			else if (movement == 2 && yBorder <= 530) {
 
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) {
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::RShift)) {
 					playerSprite.move(0.f, 2.f);
 					fireSprite.move(0.f, 2.f);
 					yBorder += 2;
@@ -375,7 +392,7 @@ int main() {
 				playerSprite.setTextureRect(sf::IntRect(spriteSizeX * animationFrame, spriteSizeY * 1, spriteSizeX, spriteSizeY));
 			}
 			else if (movement == 1 && yBorder >= 0) {
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) {
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::RShift)) {
 					playerSprite.move(0.f, -2.f);
 					fireSprite.move(0.f, -2.f);
 					yBorder -= 2;
@@ -384,7 +401,7 @@ int main() {
 					playerSprite.move(0.f, -1.f);
 					fireSprite.move(0.f, -1.f);
 					yBorder -= 1;
-					playerSprite.setTextureRect(sf::IntRect(spriteSizeX* animationFrame, spriteSizeY * 1, spriteSizeX, spriteSizeY));
+					playerSprite.setTextureRect(sf::IntRect(spriteSizeX * animationFrame, spriteSizeY * 1, spriteSizeX, spriteSizeY));
 				}
 				playerSprite.setTextureRect(sf::IntRect(spriteSizeX * animationFrame, 0, spriteSizeX, spriteSizeY));
 			}
@@ -397,6 +414,7 @@ int main() {
 			if (animationFrame >= 2) {
 				animationFrame = 2;
 			}
+
 			window.draw(backgroundSprite);
 			window.draw(playerSprite);
 			window.draw(fireSprite);
@@ -418,13 +436,17 @@ int main() {
 			else if (bloodc == 1) {
 				blood.setSize(sf::Vector2f(50, 25));
 			}
-			if (playerSprite.getGlobalBounds().intersects(item.GetGlobleBounds())) {///////////////////////////////
-				if (bloodc < 4 && htime>3) {
+			if (playerSprite.getGlobalBounds().intersects(item.GetGlobleBounds()))
+			{
+				if (bloodc < 4 && htime>3)
+				{
 					bloodc++;
 					heartclock.restart();
 				}
 				heartItem = 0;
 			}
+
+
 
 			//enemymove;;
 			enemyGenerate(enemyTime);
@@ -446,7 +468,7 @@ int main() {
 					window.draw(enemy1[i].enemy1);
 				}
 			}
-
+			window.draw(score);
 			for (int i = 0; i < 10; i++) {
 				if (enemy1ch[i] == 1) {
 					float speed = .5f;
@@ -460,15 +482,12 @@ int main() {
 			BE1Checkcollision(bloodTime);
 			III();
 			IIImove();
+
 			if (bloodc != 0) {
 				window.draw(blood);
 			}
 			else {
-				window.draw(gameover);
-				window.draw(restart);
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
-					state = 0;
-				}
+				state = 2;
 			}
 			if (bloodc < 0) {
 				bloodc = 0;
@@ -477,11 +496,34 @@ int main() {
 				window.draw(item.Item);
 			}
 
+
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::P)) {
+				while (1) {
+					if (sf::Keyboard::isKeyPressed(sf::Keyboard::C)) {
+						break;
+					}
+					if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+						state = 0;
+						break;
+					}
+				}
+			}
+
+
 			//windowcommands;;
 			window.display();
 			window.clear();
 			frameNumber++;
 		}
+		else if (state == 2) {
+		window.draw(gameover);
+		window.draw(restart);
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
+			state = 0;
+		}
+		window.display();
+		window.clear();
+	}
 	}
 	return 0;
 }
@@ -541,6 +583,7 @@ void BE1Checkcollision(float bloodTime) {
 				enemy1ch[i] = 0;
 				bullet[j].set(-100, 100);
 				enemy1[i].set(1300, 700, 1);
+				kanan += 100;
 			}
 		}
 	}
@@ -548,7 +591,7 @@ void BE1Checkcollision(float bloodTime) {
 void III() {
 	int a = rand();
 	if (heartItem == 0 && a%23 == 0) {
-		item.set(1700, rand() % 600);
+		item.set(1700, rand() % 570);
 		heartItem = 1;
 	}
 }
