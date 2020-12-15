@@ -223,7 +223,6 @@ int main() {
 	{
 		//menu;;
 		if (state == 0) {
-
 			//menubg;;
 			sf::RectangleShape menubg;
 			menubg.setSize(sf::Vector2f(1200, 600));
@@ -234,22 +233,34 @@ int main() {
 
 			//menuButton
 			Vector2i mouse = Mouse::getPosition(window);
-			if (mouse.x > 151 and mouse.x < 220 and mouse.y>209 and mouse.y < 234) {
+
+			if (mouse.x > 100 and mouse.x < 172 and mouse.y>284 and mouse.y < 316) {
+				START.setFillColor(Color::Blue);
 				if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 					state = 1;
 				}
 			}
-
-			if (mouse.x > 151 and mouse.x < 291 and mouse.y > 316 and mouse.y < 335) {
-
+			else {
+				START.setFillColor(Color::White);
 			}
 
-			if (mouse.x > 151 and mouse.x < 200 and mouse.y > 411 and mouse.y < 437)
+			if (mouse.x > 100 and mouse.x < 249 and mouse.y > 384 and mouse.y < 415) {
+				HIGHSCORE.setFillColor(Color::Blue);
+			}
+			else {
+				HIGHSCORE.setFillColor(Color::White);
+			}
+
+			if (mouse.x > 100 and mouse.x < 154 and mouse.y > 484 and mouse.y < 515)
 			{
+				EXIT.setFillColor(Color::Blue);
 				if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) 
 				{
 					window.close();
 				}
+			}
+			else {
+				EXIT.setFillColor(Color::White);
 			}
 			window.draw(header);
 			window.draw(NAME);
