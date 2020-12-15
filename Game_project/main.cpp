@@ -11,6 +11,31 @@ void shot(float, float);
 void enemyGenerate(float);
 void BE1Checkcollision();
 
+void III();
+void IIImove();
+
+class ITEM {
+public:
+	sf::RectangleShape Item;
+	sf::Texture II;
+	void set(float x, float y) {
+		II.loadFromFile("heart.png");
+		Item.setTexture(&II);
+		Item.setSize(sf::Vector2f(30.f, 30.f));
+		Item.setPosition(x, y);
+	}
+	sf::Vector2f GetPosition()
+	{
+		return Item.getPosition();
+	}
+	FloatRect GetGlobleBounds()
+	{
+		return Item.getGlobalBounds();
+	};
+
+};
+ITEM item;
+
 //bulletclass;;
 class Bulleted {
 public:
@@ -71,6 +96,9 @@ public :
 Enemy01 enemy1[10];
 
 //globalvariable;;
+
+int heartItem = 0;
+
 int chk_1[6] = { 0,0,0,0,0,0 };
 int pst = 2;
 int pst1[6];
@@ -232,7 +260,7 @@ int main() {
 
 	//gameloop;;
 	while (window.isOpen())
-	{
+	{	
 		//menu;;
 		if (state == 0) {
 
@@ -368,7 +396,6 @@ int main() {
 			if (animationFrame >= 2) {
 				animationFrame = 2;
 			}
-
 			window.draw(backgroundSprite);
 			window.draw(playerSprite);
 			window.draw(fireSprite);
@@ -422,6 +449,8 @@ int main() {
 				}
 			}
 			BE1Checkcollision();
+			III();
+			IIImove();
 			if (bloodc != 0) {
 				window.draw(blood);
 			}
@@ -434,6 +463,9 @@ int main() {
 			}
 			if (bloodc < 0) {
 				bloodc = 0;
+			}
+			if (heartItem == 1) {
+				window.draw(item.Item);
 			}
 
 			//windowcommands;;
@@ -502,5 +534,20 @@ void BE1Checkcollision() {
 				enemy1[i].set(1300, 700, 1);
 			}
 		}
+	}
+}
+void III() {
+	int a = rand();
+	if (heartItem == 0 && a%23 == 0) {
+		item.set(1700, rand() % 600);
+		heartItem = 1;
+	}
+}
+void IIImove() {
+	if (heartItem == 1) {
+		item.Item.move(-.3, 0);
+	}
+	if (item.Item.getPosition().x <= 30) {
+		heartItem = 0;
 	}
 }
