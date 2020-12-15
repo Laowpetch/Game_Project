@@ -9,7 +9,7 @@ using namespace sf;
 void shoot(float, float);
 void shot(float, float);
 void enemyGenerate(float);
-void BE1Checkcollision();
+void BE1Checkcollision (float);
 
 void III();
 void IIImove();
@@ -111,6 +111,7 @@ clock_t start = -0.2, end = 0;
 Clock enemycl;
 Clock mainClock;
 Clock bloodClock;
+Clock heartclock;
 
 //mainfunction;;
 int main() {
@@ -284,7 +285,6 @@ int main() {
 					int chk_1[6] = { 0,0,0,0,0,0 };
 					bloodc = 4;
 					mainClock.restart();
-
 					state = 1;
 				}
 			}
@@ -323,7 +323,7 @@ int main() {
 		//playingstate
 		else if (state == 1) {
 			int a;
-
+			float htime;
 			//randomNumber;;
 			srand(time(NULL));
 			a = rand();
@@ -334,6 +334,7 @@ int main() {
 			timer = ttime;
 			enemyTime = enemycl.getElapsedTime().asSeconds();
 			bloodTime = bloodClock.getElapsedTime().asSeconds();
+			htime = heartclock.getElapsedTime().asSeconds();
 			movement = 0;
 			if (enemyTime > 7.000) {
 				enemycl.restart();
@@ -417,12 +418,12 @@ int main() {
 			else if (bloodc == 1) {
 				blood.setSize(sf::Vector2f(50, 25));
 			}
-
-			if (playerSprite.getGlobalBounds().intersects(item.GetGlobleBounds())) {
-				heartItem = 0;
-				if (bloodc < 4) {
+			if (playerSprite.getGlobalBounds().intersects(item.GetGlobleBounds())) {///////////////////////////////
+				if (bloodc < 4 && htime>3) {
 					bloodc++;
+					heartclock.restart();
 				}
+				heartItem = 0;
 			}
 
 			//enemymove;;
@@ -431,10 +432,12 @@ int main() {
 				float enemyPosition = enemy1[i].enemy1.getPosition().x;
 				if (enemyPosition < 0) {
 					enemy1ch[i] = 0;
+					enemy1[i].set(1300, 700, 1);
 					if (bloodTime > 3) {
 						bloodc--;
 						bloodClock.restart();
 					}
+
 				}
 			}
 
@@ -454,7 +457,7 @@ int main() {
 					enemy1[i].animation(enemyTime);
 				}
 			}
-			BE1Checkcollision();
+			BE1Checkcollision(bloodTime);
 			III();
 			IIImove();
 			if (bloodc != 0) {
@@ -528,7 +531,7 @@ void enemyGenerate(float enemyTime) {
 		}
 	}
 }
-void BE1Checkcollision() {
+void BE1Checkcollision(float bloodTime) {
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 6; j++)
 		{
