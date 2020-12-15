@@ -10,9 +10,23 @@ void shoot(float, float);
 void shot(float, float);
 void enemyGenerate(float);
 void BE1Checkcollision (float);
-
 void III();
 void IIImove();
+
+
+class LIFE {
+public:
+	sf::RectangleShape life;
+	sf::Texture ll;
+	void set(float x,float y) {
+		ll.loadFromFile("life.png");
+		life.setTexture(&ll);
+		life.setSize(sf::Vector2f(60, 60));
+		life.setPosition(x, y);
+	}
+};
+LIFE l1, l2, l3, l4;
+
 
 class ITEM {
 public:
@@ -147,11 +161,6 @@ int main() {
 	sf::Sprite backgroundSprite;
 	backgroundSprite.setTexture(backgroundTexture);
 
-	//blood;;
-	sf::RectangleShape blood;
-	blood.setFillColor(sf::Color::Red);
-	blood.setPosition(50,25);
-	blood.setSize(sf::Vector2f(200,25));
 	
 	//player;;
 	sf::Sprite playerSprite;
@@ -267,11 +276,15 @@ int main() {
 	score.setCharacterSize(50);
 	score.setPosition(1000, 25);
 
+	l1.set(70, 28);
+	l2.set(125, 28);
+	l3.set(180, 28);
+	l4.set(235, 28);
 
 	//gameloop;;
 	while (window.isOpen())
 	{	
-
+		
 		//menu;;
 		if (state == 0) {
 
@@ -424,18 +437,6 @@ int main() {
 				}
 			}
 			//blood
-			if (bloodc == 4) {
-				blood.setSize(sf::Vector2f(200, 25));
-			}
-			else if (bloodc == 3) {
-				blood.setSize(sf::Vector2f(150, 25));
-			}
-			else if (bloodc == 2) {
-				blood.setSize(sf::Vector2f(100, 25));
-			}
-			else if (bloodc == 1) {
-				blood.setSize(sf::Vector2f(50, 25));
-			}
 			if (playerSprite.getGlobalBounds().intersects(item.GetGlobleBounds()))
 			{
 				if (bloodc < 4 && htime>3)
@@ -483,10 +484,8 @@ int main() {
 			III();
 			IIImove();
 
-			if (bloodc != 0) {
-				window.draw(blood);
-			}
-			else {
+			
+			if(bloodc<=0) {
 				state = 2;
 			}
 			if (bloodc < 0) {
@@ -508,7 +507,23 @@ int main() {
 					}
 				}
 			}
+			if (bloodc >= 4) {
+				window.draw(l4.life);
+			}
+			if (bloodc >= 3) {
+				window.draw(l3.life);
+			}
+			if (bloodc >= 2) {
+				window.draw(l2.life);
+			}
+			if (bloodc >= 1) {
+				window.draw(l1.life);
+			}
 
+			
+			
+			
+			
 
 			//windowcommands;;
 			window.display();
