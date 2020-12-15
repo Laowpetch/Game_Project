@@ -13,7 +13,6 @@ void BE1Checkcollision (float);
 void III();
 void IIImove();
 
-
 class LIFE {
 public:
 	sf::RectangleShape life;
@@ -26,7 +25,6 @@ public:
 	}
 };
 LIFE l1, l2, l3, l4;
-
 
 class ITEM {
 public:
@@ -110,7 +108,6 @@ public :
 Enemy01 enemy1[10];
 
 //globalvariable;;
-
 int heartItem = 0;
 int chk_1[6] = { 0,0,0,0,0,0 };
 int pst = 2;
@@ -161,7 +158,6 @@ int main() {
 	sf::Sprite backgroundSprite;
 	backgroundSprite.setTexture(backgroundTexture);
 
-	
 	//player;;
 	sf::Sprite playerSprite;
 	playerSprite.setTexture(playerTexture);
@@ -177,7 +173,7 @@ int main() {
 	int fspriteSizeY = playerTexture.getSize().y / 1;
 	fireSprite.setTextureRect(sf::IntRect(0, 0, fspriteSizeX, fspriteSizeY));
 	fireSprite.setPosition(90, 57);
-	
+
 	//gameover
 	sf::RectangleShape gameover;
 	gameover.setSize(sf::Vector2f(1200, 600));
@@ -220,7 +216,6 @@ int main() {
 	header.setCharacterSize(60);
 	header.setPosition(100, 75);
 
-	
 	//STARTatmenu
 	START.setFont(gameFont);
 	START.setOutlineColor(Color::Black);
@@ -277,9 +272,9 @@ int main() {
 	score.setPosition(1000, 25);
 
 	l1.set(70, 28);
-	l2.set(125, 28);
-	l3.set(180, 28);
-	l4.set(235, 28);
+	l2.set(135, 28);
+	l3.set(200, 28);
+	l4.set(265, 28);
 
 	//gameloop;;
 	while (window.isOpen())
@@ -287,7 +282,6 @@ int main() {
 		
 		//menu;;
 		if (state == 0) {
-
 
 			//menubg;;
 			sf::RectangleShape menubg;
@@ -299,8 +293,6 @@ int main() {
 
 			//menuButton
 			Vector2i mouse = Mouse::getPosition(window);
-
-
 			if (mouse.x > 100 and mouse.x < 172 and mouse.y>284 and mouse.y < 316) {
 				START.setFillColor(Color::Blue);
 				if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
@@ -436,6 +428,7 @@ int main() {
 					window.draw(bullet[i].bullet);
 				}
 			}
+
 			//blood
 			if (playerSprite.getGlobalBounds().intersects(item.GetGlobleBounds()))
 			{
@@ -446,8 +439,6 @@ int main() {
 				}
 				heartItem = 0;
 			}
-
-
 
 			//enemymove;;
 			enemyGenerate(enemyTime);
@@ -469,6 +460,7 @@ int main() {
 					window.draw(enemy1[i].enemy1);
 				}
 			}
+
 			window.draw(score);
 			for (int i = 0; i < 10; i++) {
 				if (enemy1ch[i] == 1) {
@@ -484,7 +476,6 @@ int main() {
 			III();
 			IIImove();
 
-			
 			if(bloodc<=0) {
 				state = 2;
 			}
@@ -494,7 +485,6 @@ int main() {
 			if (heartItem == 1) {
 				window.draw(item.Item);
 			}
-
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::P)) {
 				while (1) {
@@ -519,11 +509,6 @@ int main() {
 			if (bloodc >= 1) {
 				window.draw(l1.life);
 			}
-
-			
-			
-			
-			
 
 			//windowcommands;;
 			window.display();
@@ -581,7 +566,7 @@ void enemyGenerate(float enemyTime) {
 	float dif = (float)(end - start) / CLOCKS_PER_SEC;
 	for (int i = 0; i < 10; i++) {
 		if (enemy1ch[i] == 0 && dif > .75) {
-			enemy1[i].set(1000, rand() % 500, enemyTime);
+			enemy1[i].set(1300, rand() % 500, enemyTime);
 			enemy1ch[i] = 1;
 			start = clock();
 			break;
