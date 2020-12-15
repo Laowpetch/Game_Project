@@ -404,7 +404,6 @@ int main() {
 					window.draw(bullet[i].bullet);
 				}
 			}
-
 			//blood
 			if (bloodc == 4) {
 				blood.setSize(sf::Vector2f(200, 25));
@@ -417,6 +416,13 @@ int main() {
 			}
 			else if (bloodc == 1) {
 				blood.setSize(sf::Vector2f(50, 25));
+			}
+
+			if (playerSprite.getGlobalBounds().intersects(item.GetGlobleBounds())) {
+				heartItem = 0;
+				if (bloodc < 4) {
+					bloodc++;
+				}
 			}
 
 			//enemymove;;
