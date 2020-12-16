@@ -155,13 +155,6 @@ int main() {
 	//renderwindow;;
 	sf::RenderWindow window(sf::VideoMode(1200, 600), "Pachara Loawpetch 63010629");
 
-	//bgtexture;;
-	sf::Texture backgroundTexture;
-	if (!backgroundTexture.loadFromFile("bg.png"))
-	{
-		std::cout << "load failed" << std::endl;
-	}
-
 	//playertexture;;
 	sf::Texture playerTexture;
 	if (!playerTexture.loadFromFile("player_plane.png"))
@@ -184,7 +177,7 @@ int main() {
 	int spriteSizeX = playerTexture.getSize().x / 3;
 	int spriteSizeY = playerTexture.getSize().y / 2;
 	playerSprite.setTextureRect(sf::IntRect(0, 0, spriteSizeX, spriteSizeY));
-	playerSprite.setPosition(150, 300);
+	playerSprite.setPosition(150, 250);
 
 	//fire;;
 	sf::Sprite fireSprite;
@@ -192,7 +185,7 @@ int main() {
 	int fspriteSizeX = playerTexture.getSize().x / 4;
 	int fspriteSizeY = playerTexture.getSize().y / 1;
 	fireSprite.setTextureRect(sf::IntRect(0, 0, fspriteSizeX, fspriteSizeY));
-	fireSprite.setPosition(90, 307);
+	fireSprite.setPosition(90, 257);
 
 	//gameover
 	sf::RectangleShape gameover;
@@ -282,7 +275,7 @@ int main() {
 	restart.setStyle(Text::Regular);
 	restart.setString("Please  press  'R'  going  back  to  main  menu");
 	restart.setCharacterSize(50);
-	restart.setPosition(180, 400);
+	restart.setPosition(180, 450);
 
 	//score
 	score.setFont(headerFont);
@@ -301,7 +294,7 @@ int main() {
 	//gameloop;;
 	while (window.isOpen())
 	{
-		
+		score.setString(std::to_string(kanan));
 		//menu;;
 		if (state == 0) {
 
@@ -369,6 +362,10 @@ int main() {
 
 		//playingstate
 		else if (state == 1) {
+			score.setCharacterSize(50);
+			score.setPosition(1000, 25);
+
+
 			int a;
 			float htime;
 			float ba;
@@ -377,8 +374,6 @@ int main() {
 			a = rand();
 			a = rand();
 
-			//other;;
-			score.setString(std::to_string(kanan));
 
 			ba = bgclock.getElapsedTime().asSeconds();
 			ttime = mainClock.getElapsedTime().asSeconds();
@@ -474,6 +469,7 @@ int main() {
 					heartclock.restart();
 				}
 				heartItem = 0;
+				item.set(1700, 100);
 			}
 
 			//enemymove;;
@@ -541,11 +537,16 @@ int main() {
 			frameNumber++;
 		}
 		else if (state == 2) {
+		score.setCharacterSize(100);
+		score.setPosition(500, 250);
+			
+		
 			window.draw(gameover);
 			window.draw(restart);
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
 				state = 0;
 			}
+			window.draw(score);
 			window.display();
 			window.clear();
 		}
