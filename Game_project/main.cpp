@@ -3,6 +3,7 @@
 #include<math.h>
 #include<vector>
 #include<stdio.h>
+#include<SFML/Audio.hpp>
 using namespace sf;
 
 //functionprototype;;
@@ -145,11 +146,11 @@ Clock mainClock;
 Clock bloodClock;
 Clock heartclock;
 Clock bgclock;
+Clock musicClock;
 
 //mainfunction;;
 int main() {
 
-	//generalvariable;;
 	float enemyTime;
 
 	//renderwindow;;
@@ -208,7 +209,7 @@ int main() {
 	float ttime;
 	float bloodTime;
 	int timer;
-	int state = 1;
+	int state = 0;
 
 	//Fontsetting;;
 	Font gameFont;
@@ -322,9 +323,22 @@ int main() {
 
 	background.set();
 
+
+	sf::Music menuMusic;
+	menuMusic.openFromFile("mainmenu.ogg");	
+
+	sf::Music playingMusic;
+	playingMusic.openFromFile("playing.ogg");
+
+	sf::Music gameoverMusic;
+	gameoverMusic.openFromFile("gameover.ogg");
+
+	menuMusic.play();
+
 	//gameloop;;
 	while (window.isOpen())
 	{
+
 		score.setString(std::to_string(kanan));
 		//menu;;
 		if (state == 0) {
@@ -349,6 +363,8 @@ int main() {
 					bloodc = 4;
 					mainClock.restart();
 					state = 1;
+					menuMusic.stop();
+					playingMusic.play();
 					for (int i = 0; i < 10; i++) {
 						enemy1[i].set(1300, 700, 1);
 					}
@@ -447,7 +463,7 @@ int main() {
 				}
 				playerSprite.setTextureRect(sf::IntRect(spriteSizeX * animationFrame, spriteSizeY * 1, spriteSizeX, spriteSizeY));
 			}
-			else if (movement == 1 && yBorder >= 81) {
+			else if (movement == 1 && yBorder >= 100) {
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::RShift)) {
 					playerSprite.move(0.f, -2.f);
 					fireSprite.move(0.f, -2.f);
@@ -537,6 +553,8 @@ int main() {
 
 			if (bloodc <= 0) {
 				state = 2;
+				playingMusic.stop();
+				gameoverMusic.play();
 			}
 			if (bloodc < 0) {
 				bloodc = 0;
@@ -569,6 +587,8 @@ int main() {
 					}
 					if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
 						state = 0;
+						playingMusic.stop();
+						menuMusic. play();
 						break;
 					}
 					window.display();
@@ -590,6 +610,8 @@ int main() {
 			window.draw(restart);
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
 				state = 0;
+				gameoverMusic.stop();
+				menuMusic.play();
 			}
 			window.draw(score);
 			window.display();
