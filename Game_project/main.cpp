@@ -20,7 +20,7 @@ public:
 	void set() {
 		b.loadFromFile("bg.jpg");
 		bg.setTexture(&b);
-		bg.setSize(sf::Vector2f(3600,600));
+		bg.setSize(sf::Vector2f(3600, 600));
 		bg.setPosition(0, 0);
 	}
 	void animation(float animationFrame) {
@@ -169,7 +169,7 @@ int main() {
 		std::cout << "load failed" << std::endl;
 	}
 
-	
+
 
 	//player;;
 	sf::Sprite playerSprite;
@@ -448,7 +448,7 @@ int main() {
 				bgclock.restart();
 				ba = 0;
 			}
-			background.animation(ba/100);
+			background.animation(ba / 100);
 			window.draw(background.bg);
 
 
@@ -479,7 +479,7 @@ int main() {
 				if (enemyPosition < 0) {
 					enemy1ch[i] = 0;
 					enemy1[i].set(1300, 700, 1);
-					if (bloodTime > 3) {
+					if (bloodTime > 1) {
 						bloodc--;
 						bloodClock.restart();
 					}
@@ -537,10 +537,10 @@ int main() {
 			frameNumber++;
 		}
 		else if (state == 2) {
-		score.setCharacterSize(100);
-		score.setPosition(500, 250);
-			
-		
+			score.setCharacterSize(100);
+			score.setPosition(500, 250);
+
+
 			window.draw(gameover);
 			window.draw(restart);
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
