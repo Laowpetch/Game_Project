@@ -169,7 +169,11 @@ int main() {
 		std::cout << "load failed" << std::endl;
 	}
 
-
+	sf::Texture pauseT;
+	pauseT.loadFromFile("pause.jpg");
+	sf::RectangleShape pausebg;
+	pausebg.setSize(sf::Vector2f(1200, 600));
+	pausebg.setTexture(&pauseT);
 
 	//player;;
 	sf::Sprite playerSprite;
@@ -204,7 +208,7 @@ int main() {
 	float ttime;
 	float bloodTime;
 	int timer;
-	int state = 0;
+	int state = 1;
 
 	//Fontsetting;;
 	Font gameFont;
@@ -218,6 +222,9 @@ int main() {
 	Text NAME;
 	Text restart;
 	Text score;
+	Text pauseh;
+	Text pauseadv1;
+	Text pauseadv2;
 
 	//Header
 	header.setFont(headerFont);
@@ -283,6 +290,30 @@ int main() {
 	score.setStyle(Text::Regular);
 	score.setCharacterSize(50);
 	score.setPosition(1000, 25);
+
+	//pauseh;;
+	pauseh.setFont(headerFont);
+	pauseh.setFillColor(Color::White);
+	pauseh.setStyle(Text::Regular);
+	pauseh.setCharacterSize(200);
+	pauseh.setString("Pause");
+	pauseh.setPosition(350, 50);
+
+	//pauseadv1;;
+	pauseadv1.setFont(gameFont);
+	pauseadv1.setFillColor(Color::White);
+	pauseadv1.setStyle(Text::Regular);
+	pauseadv1.setCharacterSize(50);
+	pauseadv1.setString("Press C to continue");
+	pauseadv1.setPosition(400, 325);
+
+	//pauseadv1;;
+	pauseadv2.setFont(gameFont);
+	pauseadv2.setFillColor(Color::White);
+	pauseadv2.setStyle(Text::Regular);
+	pauseadv2.setCharacterSize(25);
+	pauseadv2.setString("Press esc to main menu");
+	pauseadv2.setPosition(470, 450);
 
 	l1.set(70, 28);
 	l2.set(135, 28);
@@ -396,10 +427,6 @@ int main() {
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 			{
 				movement = 1;
-			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-			{
-				window.close();
 			}
 
 			if (movement == 0) {
@@ -529,6 +556,24 @@ int main() {
 			}
 			if (bloodc >= 1) {
 				window.draw(l1.life);
+			}
+
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::P)) {
+				while (1) {
+					window.draw(pausebg);
+					window.draw(pauseh);
+					window.draw(pauseadv1);
+					window.draw(pauseadv2);
+					if (sf::Keyboard::isKeyPressed(sf::Keyboard::C)) {
+						break;
+					}
+					if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+						state = 0;
+						break;
+					}
+					window.display();
+					window.clear();
+				}
 			}
 
 			//windowcommands;;
